@@ -1,26 +1,20 @@
-import { useEffect } from 'react'
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import { Navbar } from './components/layout/Navbar'
+import { SendPage } from './pages/SendPage'
+import { ProfilePage } from './pages/ProfilePage'
 
-// import { createYoClient } from '@yo-protocol/core'
-import { useVaults } from "@yo-protocol/react"
-// import type { VaultConfig } from "@yo-protocol/core"
-
-import './App.css'
-
-function App() {
-  const { vaults, isLoading } = useVaults()
-
-  if (isLoading) return <p>Loading vaults...</p>
-  console.log(vaults)
+export default function App() {
   return (
-    <ul>
-      {vaults.map((v) => (
-        <li key={v.asset.address}>
-          <strong>{v.name}</strong> ({v.asset.symbol})
-        </li>
-      ))}
-    </ul>
+    <BrowserRouter>
+      <div className="min-h-screen bg-background text-foreground">
+        <Navbar />
+        <main className="max-w-2xl mx-auto px-4 py-8">
+          <Routes>
+            <Route path="/" element={<SendPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Routes>
+        </main>
+      </div>
+    </BrowserRouter>
   )
 }
-
-
-export default App
