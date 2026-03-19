@@ -5,7 +5,7 @@ import { Skeleton } from '@/components/ui/skeleton'
 import { formatEther } from 'viem'
 import { formatUnits } from "viem"
 
-const VAULT_ID = 'yoUSD'
+const VAULT_ID = 'yoBTC'
 
 export function VaultStats() {
   const { address } = useAccount()

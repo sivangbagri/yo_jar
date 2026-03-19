@@ -10,7 +10,7 @@ import { RoundUpConsentModal } from './RoundUpConsentModal'
 import { roundUpToNearest5, getSavingsAmount } from '@/hooks/useRoundUp'
 import type { Transaction } from '@/types'
 
-const VAULT_ID = 'yoUSD' // ← use yoUSD (confirmed in live demo); check if yoBTC is available on your chain
+const VAULT_ID = 'yoBTC' 
 
 export function SendForm({ onTransactionComplete }: { onTransactionComplete: (tx: Transaction) => void }) {
   const { isConnected } = useAccount()

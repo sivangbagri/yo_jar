@@ -12,7 +12,7 @@ import { formatEther } from 'viem'
 import { formatUnits } from "viem"
 
 import { StatCard } from "@/components/profile/StatCard"
-const VAULT_ID = 'yoUSD'
+const VAULT_ID = 'yoBTC'
 
 function loadTransactions(): Transaction[] {
     try {
@@ -48,7 +48,7 @@ export function ProfilePage() {
     // User on-chain history (total deposits count/sum)
     const { history, isLoading: userHistLoading } = useUserHistory(VAULT_ID, address)
     // User YO rewards
-    const { rewards, isLoading: rewardsLoading } = useUserRewards(address)
+    // const { rewards, isLoading: rewardsLoading } = useUserRewards(address)
 
     const totalDeposited = history?.length
         ? history
@@ -57,11 +57,11 @@ export function ProfilePage() {
             .toFixed(4)
         : null
 
-    const rewardDisplay = rewards
-        ? typeof rewards === 'object'
-            ? JSON.stringify(rewards)
-            : String(rewards)
-        : null
+    // const rewardDisplay = rewards
+    //     ? typeof rewards === 'object'
+    //         ? JSON.stringify(rewards)
+    //         : String(rewards)
+    //     : null
 
     if (!isConnected) {
         return (
@@ -74,13 +74,14 @@ export function ProfilePage() {
     const matchedVault = vaults?.find(
         (v: any) => v.id === VAULT_ID
     )
+    console.log("matchedVault ",matchedVault)
     const apy7d = matchedVault?.yield["7d"] != null
         ? `${Number(matchedVault.yield["7d"]).toFixed(2)}%`
         : null
 
 
     const TVL = matchedVault?.tvl.formatted != null
-        ? `${matchedVault.tvl.formatted}`
+        ? `${matchedVault.tvl.raw}`
         : null
 
 
@@ -143,7 +144,7 @@ export function ProfilePage() {
 
                 {/* ── Vault Stats ── */}
                 <section className="profile-section">
-                    <h2 className="section-title">Vault stat</h2>
+                    <h2 className="section-title">Vault stat {VAULT_ID}</h2>
                     <div className="vault-stats-grid">
 
                         <StatCard
@@ -173,10 +174,10 @@ export function ProfilePage() {
                             value={vaultsLoading ? null : apy7d ?? '—'}
                             accent
                         />
-                        <StatCard
+                        {/* <StatCard
                             label="User rewards"
                             value={rewardsLoading ? null : rewardDisplay ?? '—'}
-                        />
+                        /> */}
 
                     </div>
                 </section>
