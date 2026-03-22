@@ -1,9 +1,7 @@
-import { useAccount, useEnsAvatar } from 'wagmi'
+import { useAccount } from 'wagmi'
 import {
     useUserPosition,
-    useVaultHistory,
     useUserHistory,
-    useUserRewards,
     useVaultState,
     useVaults
 } from '@yo-protocol/react'
@@ -32,9 +30,6 @@ function formatDate(ts: number) {
 
 export function ProfilePage() {
     const { address, isConnected } = useAccount()
-    const { data: avatar } = useEnsAvatar({
-        address,
-    })
     const [transactions, setTransactions] = useState<Transaction[]>(loadTransactions)
     useEffect(() => {
       // Re-read on navigation back to this page (focus) or cross-tab writes (storage)
@@ -50,7 +45,7 @@ export function ProfilePage() {
     // Your shares + assets
     const { position, isLoading: posLoading } = useUserPosition(VAULT_ID, address)
     // Exchange rate + TVL from on-chain state
-    const { vaultState, isLoading: vaultLoading } = useVaultState(VAULT_ID)
+    const { vaultState } = useVaultState(VAULT_ID)
     // APY % — latest point from yield history
     const { vaults, isLoading: vaultsLoading } = useVaults()
 
@@ -94,7 +89,7 @@ export function ProfilePage() {
         : null
 
 
-    const TVL = matchedVault?.tvl.formatted != null
+    const TVL :any = matchedVault?.tvl.formatted != null
         ? `${matchedVault.tvl.raw}`
         : null
 
@@ -111,7 +106,8 @@ export function ProfilePage() {
                     <div className="profile-avatar">
                         {/* X-circle avatar matching wireframe */}
                         <img
-                            src={avatar ?? `https://effigy.im/a/${address}.svg`}
+                            src={
+                              `https://effigy.im/a/${address}.svg`}
                             alt="avatar"
                             width={60}
                             height={60}

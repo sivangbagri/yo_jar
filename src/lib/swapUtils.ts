@@ -1,5 +1,4 @@
-import { parseUnits, createPublicClient, http } from 'viem'
-import { base } from 'wagmi/chains'
+import { parseUnits} from 'viem'
 import { BASE_CHAIN_ID, TOKENS, DECIMALS } from './constants'
 
 const ZERO_EX_API_KEY = import.meta.env.VITE_ZEROX_API_KEY as string
