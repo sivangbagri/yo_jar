@@ -10,8 +10,8 @@ import {
 import type { Transaction } from '@/types'
 import { formatEther } from 'viem'
 import { formatUnits } from "viem"
-
 import { StatCard } from "@/components/profile/StatCard"
+import { useState, useEffect } from 'react';
 const VAULT_ID = 'yoBTC'
 
 function loadTransactions(): Transaction[] {
@@ -35,8 +35,17 @@ export function ProfilePage() {
     const { data: avatar } = useEnsAvatar({
         address,
     })
-    const transactions = loadTransactions()
-
+    const [transactions, setTransactions] = useState<Transaction[]>(loadTransactions)
+    useEffect(() => {
+      // Re-read on navigation back to this page (focus) or cross-tab writes (storage)
+      const refresh = () => setTransactions(loadTransactions())
+      window.addEventListener('focus', refresh)
+      window.addEventListener('storage', refresh)
+      return () => {
+        window.removeEventListener('focus', refresh)
+        window.removeEventListener('storage', refresh)
+      }
+    }, [])
     // ── Vault stats hooks ──────────────────────────────────────────────
     // Your shares + assets
     const { position, isLoading: posLoading } = useUserPosition(VAULT_ID, address)
@@ -47,15 +56,20 @@ export function ProfilePage() {
 
     // User on-chain history (total deposits count/sum)
     const { history, isLoading: userHistLoading } = useUserHistory(VAULT_ID, address)
+    console.log("history",history)
     // User YO rewards
     // const { rewards, isLoading: rewardsLoading } = useUserRewards(address)
 
-    const totalDeposited = history?.length
-        ? history
-            .filter((h: any) => h.type === 'deposit')
-            .reduce((sum: number, h: any) => sum + parseFloat(h.assets ?? '0'), 0)
-            .toFixed(4)
-        : null
+    const totalDeposited = !userHistLoading && history?.length
+    ? history
+        .filter((h: any) => h.type === 'Deposit')
+        .reduce((sum: number, h: any) => {
+          
+          const val = parseFloat(h.assets?.formatted ?? h.assets?.raw ?? '0')
+          return sum + val
+        }, 0)
+        .toFixed(6)
+    : null
 
     // const rewardDisplay = rewards
     //     ? typeof rewards === 'object'

@@ -11,7 +11,7 @@ export default defineConfig({
     },
   },
   server: {
-    allowedHosts: ["bikini-kit-andale-burn.trycloudflare.com"],
+    allowedHosts: ["format-massage-webshots-scenarios.trycloudflare.com"],
     proxy: {
       // Any request to /0x-api/* gets forwarded to api.0x.org
       // Headers are added server-side — no CORS preflight from browser
